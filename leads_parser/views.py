@@ -14,12 +14,20 @@ from .validators import is_time_within_range
 class LeadsManagementViewSet(viewsets.ViewSet):
     def create(self, request):
         if not is_time_within_range():
-            return Response({"message": "user can not upload data at this time"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "user can not upload data at this time"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         data = request.FILES.get("file")
         data = base64.b64encode(data.read()).decode("utf-8")
         task = extract_csv_data.delay(data)
         return Response(
-            {"message": task.id, "status": task.status}, status=status.HTTP_200_OK
+            {
+                "task_id": task.id,
+                "status": task.status,
+                "message": "task is still processing",
+            },
+            status=status.HTTP_200_OK,
         )
 
     def retrieve(self, request, pk):

@@ -11,7 +11,7 @@ services:
     startCommand: "celery --app leads worker --loglevel info --concurrency 4"
     autoDeploy: false
     envVars:
-      - key: CELERY_BROKER_URL
+      - key: CELERY_BROKER
         fromService:
           name: celery-redis
           type: redis

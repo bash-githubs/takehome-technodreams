@@ -1,7 +1,9 @@
+from io import BytesIO
+
 import pandas as pd
+
 from .models import Customer, Sheet
 from .validators import is_number_in_international_format
-from io import BytesIO
 
 
 def read_csv(dataframe):
@@ -27,7 +29,7 @@ def read_csv(dataframe):
             contacts=row["Contacts"],
             pipelines=row["Pipelines"],
             notes=row["Notes"],
-            sheet_id=sheet
+            sheet_id=sheet,
         )
         customer.save()
     return sheet.id

@@ -15,19 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from rest_framework.routers import DefaultRouter
 from leads_parser.views import LeadsManagementViewSet
-
+from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r"leads", LeadsManagementViewSet, basename="leads")
 
 resources = router.urls
 
-urlpatterns = (
-    [
-        path('admin/', admin.site.urls),
-    ]
-    + resources
-)
-
+urlpatterns = [
+    path("admin/", admin.site.urls),
+] + resources

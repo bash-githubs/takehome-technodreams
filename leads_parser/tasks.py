@@ -1,8 +1,10 @@
-from .parser import read_csv
 import base64
-from celery import shared_task
-import pandas as pd
 from io import BytesIO
+
+import pandas as pd
+from celery import shared_task
+
+from .parser import read_csv
 
 
 @shared_task

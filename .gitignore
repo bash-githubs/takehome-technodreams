@@ -1,0 +1,5 @@
+venv/
+database-volume/
+.idea/
+.env
+.DS_Store

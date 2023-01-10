@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    api:
+        volumes:
+            - .:/takehome
+        depends_on:
+            database:
+                condition: service_healthy

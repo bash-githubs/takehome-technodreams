@@ -1,0 +1,82 @@
+version: '3'
+
+services:
+    api:
+        build:
+            context: .
+        restart: always
+        ports:
+            - 8000:8000
+        command: python3 manage.py runserver 0.0.0.0:8000
+        environment:
+            ENV: LOCAL
+            PORT: 8000
+            DJANGO_SECRET_KEY: ZWNkNTQ5NTUtNWRlMi00Zjg0LWIxN2UtNGQ5NmIyYmRmYjUw
+            DB_HOST: database
+            DB_PORT: 5432
+            DB_NAME: leads
+            DB_PASSWORD: leads
+            DB_USER: leads
+            CELERY_BROKER: redis://redis:6379/0
+            CELERY_BACKEND: redis://redis:6379/0
+        volumes:
+            - .:/takehome
+        depends_on:
+            - redis
+            - database
+        networks:
+            - redis_net
+            - database_net
+
+    celery:
+        build:
+            context: .
+        command: celery --app=leads worker --loglevel=info
+        environment:
+            ENV: LOCAL
+            PORT: 1337
+            DJANGO_SECRET_KEY: ZWNkNTQ5NTUtNWRlMi00Zjg0LWIxN2UtNGQ5NmIyYmRmYjUw
+            DB_HOST: database
+            DB_PORT: 5432
+            DB_NAME: leads
+            DB_PASSWORD: leads
+            DB_USER: leads
+            CELERY_BROKER: redis://redis:6379/0
+            CELERY_BACKEND: redis://redis:6379/0
+        restart: always
+        volumes:
+            - .:/takehome
+        depends_on:
+            - api
+            - redis
+        networks:
+            - redis_net
+            - database_net
+    database:
+        image: postgres:12
+        restart: always
+        ports:
+            - 5432:5432
+        volumes:
+            - ./database-volume:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: leads
+            POSTGRES_DB: leads
+            POSTGRES_USER: leads
+
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U leads -d leads"]
+            interval: 10s
+            timeout: 10s
+            retries: 5
+        networks:
+            - database_net
+    redis:
+        image: redis:7-alpine
+        restart: always
+        networks:
+            - redis_net
+
+networks:
+    redis_net:
+    database_net:

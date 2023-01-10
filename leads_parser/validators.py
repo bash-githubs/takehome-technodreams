@@ -2,12 +2,13 @@ import datetime as d
 
 import phonenumbers
 import pytz
+from django.conf import settings
 
 
 def is_time_within_range() -> bool:
     indian_time = pytz.timezone("Asia/Kolkata")
     current_hour = d.datetime.now(indian_time).hour
-    if 9 <= current_hour <= 18:
+    if settings.UPLOAD_START_HOUR <= current_hour <= settings.UPLOAD_END_HOUR:
         return True
     return False
 

@@ -59,6 +59,8 @@ CORS_ALLOW_HEADERS = [
     "origin",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = "leads.urls"
 
 TEMPLATES = [

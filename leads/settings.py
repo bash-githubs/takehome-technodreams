@@ -52,6 +52,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "content-type",
+    "origin",
+]
+
 ROOT_URLCONF = "leads.urls"
 
 TEMPLATES = [

@@ -19,7 +19,7 @@ class LeadsManagementViewSet(viewsets.ViewSet):
                 {"message": "user can not upload data at this time"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        data = request.FILES.get("file")
+        data = request.data['file']
         print("Data", data)
         print("Request", request.data)
         data = base64.b64encode(data.read()).decode("utf-8")

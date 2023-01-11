@@ -19,6 +19,8 @@ class LeadsManagementViewSet(viewsets.ViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         data = request.FILES.get("file")
+        print("Data", data)
+        print("Request", request.FILES)
         data = base64.b64encode(data.read()).decode("utf-8")
         task = extract_csv_data.delay(data)
         return Response(

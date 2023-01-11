@@ -9,6 +9,7 @@ from .models import Customer
 from .serializer import CustomerSerializer
 from .tasks import extract_csv_data
 from .validators import is_time_within_range
+import json
 
 
 class LeadsManagementViewSet(viewsets.ViewSet):
@@ -20,7 +21,7 @@ class LeadsManagementViewSet(viewsets.ViewSet):
             )
         data = request.FILES.get("file")
         print("Data", data)
-        print("Request", request, request.FILES)
+        print("Request", request.data)
         data = base64.b64encode(data.read()).decode("utf-8")
         task = extract_csv_data.delay(data)
         return Response(
